@@ -24,12 +24,28 @@ class ButtonPage extends StatefulWidget {
   _ButtonPageState createState() => _ButtonPageState();
 }
 
-class _ButtonPageState extends State<ButtonPage> {
-  int _counter = 0;
+class Item {
+  final String name;
+  bool pressed = false;
 
-  void _incrementCounter() {
+  Item(this.name);
+}
+
+class _ButtonPageState extends State<ButtonPage> {
+  var _items = [
+    Item("Feed Anton"),
+    Item("Let Anton out"),
+    Item("Walk Anton"),
+    Item("Glucosamine"),
+    Item("Brush Anton's teeth"),
+    Item("Clip Anton's nails"),
+  ];
+
+  void _setPressed(Item item) {
     setState(() {
-      _counter++;
+      _items.firstWhere((_item) {
+        return _item.name == item.name;
+      }).pressed = true;
     });
   }
 
@@ -39,25 +55,29 @@ class _ButtonPageState extends State<ButtonPage> {
       appBar: AppBar(
         title: Text(widget.title),
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              'You have pushed the button this many times:',
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.display1,
-            ),
-          ],
-        ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: Icon(Icons.add),
-      ),
+      body: GridView.count(
+          padding: EdgeInsets.all(16),
+          mainAxisSpacing: 16,
+          crossAxisSpacing: 16,
+          crossAxisCount: 3,
+          children: _items.map((item) {
+            return MaterialButton(
+              color: item.pressed ? Colors.blue : Colors.red,
+              child: Center(
+                child: Text(
+                  item.name,
+                  style: Theme.of(context)
+                      .textTheme
+                      .headline
+                      .apply(color: Colors.white),
+                  textAlign: TextAlign.center,
+                ),
+              ),
+              onPressed: () {
+                _setPressed(item);
+              },
+            );
+          }).toList()),
     );
   }
 }
