@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'item_container.dart';
 
 void main() => runApp(App());
 
@@ -10,28 +11,28 @@ class App extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: ButtonPage(title: '1st floor'),
+      home: ItemPage(title: '1st floor'),
     );
   }
 }
 
-class ButtonPage extends StatefulWidget {
-  ButtonPage({Key key, this.title}) : super(key: key);
+class ItemPage extends StatefulWidget {
+  ItemPage({Key key, this.title}) : super(key: key);
 
   final String title;
 
   @override
-  _ButtonPageState createState() => _ButtonPageState();
+  _ItemPageState createState() => _ItemPageState();
 }
 
 class Item {
   final String name;
-  bool pressed = false;
+  bool expired = false;
 
   Item(this.name);
 }
 
-class _ButtonPageState extends State<ButtonPage> {
+class _ItemPageState extends State<ItemPage> {
   var _items = [
     Item("Feed Anton"),
     Item("Let Anton out"),
@@ -45,7 +46,7 @@ class _ButtonPageState extends State<ButtonPage> {
     setState(() {
       _items.firstWhere((_item) {
         return _item.name == item.name;
-      }).pressed = true;
+      }).expired = true;
     });
   }
 
@@ -71,18 +72,9 @@ class _ButtonPageState extends State<ButtonPage> {
           crossAxisSpacing: 16,
           crossAxisCount: 3,
           children: _items.map((item) {
-            return MaterialButton(
-              color: item.pressed ? Colors.blue : Colors.red,
-              child: Center(
-                child: Text(
-                  item.name,
-                  style: Theme.of(context)
-                      .textTheme
-                      .headline
-                      .apply(color: Colors.white),
-                  textAlign: TextAlign.center,
-                ),
-              ),
+            return ItemContainer(
+              name: item.name,
+              expired: item.expired,
               onPressed: () {
                 _setPressed(item);
               },
