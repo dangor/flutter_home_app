@@ -53,6 +53,16 @@ class _ButtonPageState extends State<ButtonPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        leading: PopupMenuButton(
+          itemBuilder: (BuildContext context) => [
+                const PopupMenuItem(
+                  child: Text("Admin"),
+                ),
+                const PopupMenuItem(
+                  child: Text("1st floor"),
+                ),
+              ],
+        ),
         title: Text(widget.title),
       ),
       body: GridView.count(
