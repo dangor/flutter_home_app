@@ -27,19 +27,22 @@ class ItemPage extends StatefulWidget {
 
 class Item {
   final String name;
+  final String asset;
   bool expired = false;
 
-  Item(this.name);
+  Item(this.name, this.asset);
 }
 
 class _ItemPageState extends State<ItemPage> {
   var _items = [
-    Item("Feed Anton"),
-    Item("Let Anton out"),
-    Item("Walk Anton"),
-    Item("Glucosamine"),
-    Item("Brush Anton's teeth"),
-    Item("Clip Anton's nails"),
+    Item("Feed Anton", "images/anton_fed.png"),
+    Item("Let Anton out", "images/anton_fed.png"),
+    Item("Walk Anton", "images/anton_fed.png"),
+    Item("Glucosamine", "images/anton_fed.png"),
+    Item("Brush Anton's teeth", "images/anton_fed.png"),
+    Item("Clip Anton's nails", "images/anton_fed.png"),
+    Item("Clean litter box", "images/clean_litterbox.png"),
+    Item("Feed cats", "images/feed_cats.png"),
   ];
 
   void _setPressed(Item item) {
@@ -67,13 +70,14 @@ class _ItemPageState extends State<ItemPage> {
         title: Text(widget.title),
       ),
       body: GridView.count(
-          padding: EdgeInsets.all(16),
-          mainAxisSpacing: 16,
-          crossAxisSpacing: 16,
+        padding: EdgeInsets.all(8),
+        crossAxisSpacing: 8,
+        mainAxisSpacing: 8,
           crossAxisCount: 3,
           children: _items.map((item) {
             return ItemContainer(
               name: item.name,
+              asset: item.asset,
               expired: item.expired,
               onPressed: () {
                 _setPressed(item);
