@@ -1,17 +1,24 @@
 import 'package:flutter/material.dart';
+import 'item.dart';
 
 class ItemContainer extends StatelessWidget {
-  ItemContainer({this.name, this.asset, this.expired, this.onPressed});
+  ItemContainer({this.item, this.onPressed});
 
-  final String name;
-  final String asset;
-  final bool expired;
+  final Item item;
   final VoidCallback onPressed;
+
+  double _calculateRatio() {
+    if (item.lastPressed == null) {
+      return 0;
+    }
+
+    return DateTime.now().difference(item.lastPressed).inSeconds / item.config.expectedFrequency.inSeconds;
+  }
 
   @override
   Widget build(BuildContext context) {
     return Ink.image(
-      image: AssetImage(asset),
+      image: AssetImage(item.config.asset),
       fit: BoxFit.cover,
       child: InkWell(
         onTap: onPressed,
@@ -23,7 +30,7 @@ class ItemContainer extends StatelessWidget {
               alignment: Alignment.centerRight,
               child: LinearProgressIndicator(
                 backgroundColor: Colors.white54,
-                value: 0.9,
+                value: _calculateRatio(),
               ),
             ),
             Container(
@@ -31,7 +38,7 @@ class ItemContainer extends StatelessWidget {
               height: 52,
               color: Colors.black45,
               child: Text(
-                name,
+                item.config.name,
                 style: Theme.of(context).textTheme.subhead.copyWith(color: Colors.white)
               ),
             )
