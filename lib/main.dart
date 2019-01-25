@@ -45,6 +45,14 @@ class _ItemPageState extends State<ItemPage> {
     Item("Feed cats", "images/feed_cats.png"),
   ];
 
+  var _primaryUserActive = true;
+
+  void _setPrimaryUserActive(bool active) {
+    setState(() {
+      _primaryUserActive = active;
+    });
+  }
+
   void _setPressed(Item item) {
     setState(() {
       _items.firstWhere((_item) {
@@ -57,6 +65,7 @@ class _ItemPageState extends State<ItemPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: _primaryUserActive ? Colors.green : Colors.red,
         leading: PopupMenuButton(
           itemBuilder: (BuildContext context) => [
                 const PopupMenuItem(
@@ -67,6 +76,16 @@ class _ItemPageState extends State<ItemPage> {
                 ),
               ],
         ),
+        actions: <Widget>[
+          IconButton(
+            icon: Image.asset("images/angie_head.png"),
+            onPressed: () => _setPrimaryUserActive(true),
+          ),
+          IconButton(
+            icon: Image.asset("images/brian_head.png"),
+            onPressed: () => _setPrimaryUserActive(false),
+          ),
+        ],
         title: Text(widget.title),
       ),
       body: GridView.count(
