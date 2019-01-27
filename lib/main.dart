@@ -28,14 +28,14 @@ class ItemPage extends StatefulWidget {
 
 class _ItemPageState extends State<ItemPage> {
   static var _itemConfig = [
-    ItemConfig("id0", "Feed Anton", "images/anton_fed.png", Duration(hours: 12)),
-    ItemConfig("id1", "Let Anton out", "images/anton_fed.png", Duration(hours: 8)),
-    ItemConfig("id2", "Walk Anton", "images/anton_fed.png", Duration(days: 1)),
-    ItemConfig("id3", "Glucosamine", "images/anton_fed.png", Duration(days: 1)),
-    ItemConfig("id4", "Brush Anton's teeth", "images/anton_fed.png", Duration(days: 30)),
-    ItemConfig("id5", "Clip Anton's nails", "images/anton_fed.png", Duration(days: 30)),
-    ItemConfig("id6", "Clean litter box", "images/clean_litterbox.png", Duration(hours: 12)),
-    ItemConfig("id7", "Feed cats", "images/feed_cats.png", Duration(hours: 12)),
+    ItemConfig("id0", "Feed Anton", "images/anton_fed.png", Duration(seconds: 12)),
+    ItemConfig("id1", "Let Anton out", "images/anton_fed.png", Duration(seconds: 8)),
+    ItemConfig("id2", "Walk Anton", "images/anton_fed.png", Duration(minutes: 1)),
+    ItemConfig("id3", "Glucosamine", "images/anton_fed.png", Duration(minutes: 1)),
+    ItemConfig("id4", "Brush Anton's teeth", "images/anton_fed.png", Duration(seconds: 30)),
+    ItemConfig("id5", "Clip Anton's nails", "images/anton_fed.png", Duration(seconds: 30)),
+    ItemConfig("id6", "Clean litter box", "images/clean_litterbox.png", Duration(seconds: 12)),
+    ItemConfig("id7", "Feed cats", "images/feed_cats.png", Duration(seconds: 12)),
   ];
 
   var _itemMap = Map.fromIterable(_itemConfig, key: (config) => config.id, value: (config) => Item(config));

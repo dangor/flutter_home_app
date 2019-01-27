@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'item.dart';
 
@@ -6,15 +8,7 @@ class ItemContainer extends StatelessWidget {
 
   final Item item;
   final VoidCallback onPressed;
-
-  double _calculateRatio() {
-    if (item.lastPressed == null) {
-      return 0;
-    }
-
-    return DateTime.now().difference(item.lastPressed).inSeconds / item.config.expectedFrequency.inSeconds;
-  }
-
+  
   @override
   Widget build(BuildContext context) {
     return Ink.image(
@@ -26,12 +20,9 @@ class ItemContainer extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
-            Container(
-              alignment: Alignment.centerRight,
-              child: LinearProgressIndicator(
-                backgroundColor: Colors.white54,
-                value: _calculateRatio(),
-              ),
+            PointsValueIndicator(
+              lastPressed: item.lastPressed,
+              expectedFrequency: item.config.expectedFrequency,
             ),
             Container(
               padding: EdgeInsets.all(8),
@@ -44,6 +35,45 @@ class ItemContainer extends StatelessWidget {
             )
           ],
         ),
+      ),
+    );
+  }
+}
+
+class PointsValueIndicator extends StatefulWidget {
+  final DateTime lastPressed;
+  final Duration expectedFrequency;
+
+  PointsValueIndicator({Key key, this.lastPressed, this.expectedFrequency}) : super(key: key);
+
+  @override
+  _PointsValueIndicatorState createState() => _PointsValueIndicatorState();
+}
+
+class _PointsValueIndicatorState extends State<PointsValueIndicator> {
+
+  var ratio = 0.0;
+
+  @override
+  void initState() {
+    Timer.periodic(Duration(seconds: 1), (timer) => _recalculateRatio());
+    super.initState();
+  }
+
+  void _recalculateRatio() {
+    if (widget.lastPressed == null) return;
+    setState(() {
+      ratio = DateTime.now().difference(widget.lastPressed).inSeconds / widget.expectedFrequency.inSeconds;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      alignment: Alignment.centerRight,
+      child: LinearProgressIndicator(
+        backgroundColor: Colors.white54,
+        value: ratio,
       ),
     );
   }
