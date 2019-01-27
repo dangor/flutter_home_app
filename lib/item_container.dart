@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'item.dart';
+import 'how_long_ago.dart';
 
 class ItemContainer extends StatelessWidget {
   ItemContainer({this.item, this.onPressed});
@@ -26,11 +27,23 @@ class ItemContainer extends StatelessWidget {
             ),
             Container(
               padding: EdgeInsets.all(8),
-              height: 52,
               color: Colors.black45,
-              child: Text(
-                item.config.name,
-                style: Theme.of(context).textTheme.subhead.copyWith(color: Colors.white)
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Text(
+                    item.config.name,
+                    style: Theme.of(context).textTheme.subhead.copyWith(color: Colors.white),
+                    overflow: TextOverflow.ellipsis,
+                    maxLines: 1,
+                  ),
+                  Text(
+                    HowLongAgo.was(item.lastPressed),
+                    style: Theme.of(context).textTheme.subhead.copyWith(color: Colors.white70),
+                    overflow: TextOverflow.ellipsis,
+                    maxLines: 1,
+                  ),
+                ],
               ),
             )
           ],
@@ -70,7 +83,11 @@ class _PointsValueIndicatorState extends State<PointsValueIndicator> {
   bool notNull(Object o) => o != null;
 
   String _ratioText() {
-    return "x" + ratio.floor().toString();
+    if (ratio.floor() < 100) {
+      return "x${ratio.floor().toString()}";
+    } else {
+      return "!!";
+    }
   }
 
   Widget _multiplierIndicator() {
@@ -86,7 +103,8 @@ class _PointsValueIndicatorState extends State<PointsValueIndicator> {
             color: Colors.lightBlueAccent,
             shape: BoxShape.circle
         ),
-        child: Text(_ratioText(),
+        child: Text(
+          _ratioText(),
           style: Theme.of(context).textTheme.caption.copyWith(fontWeight: FontWeight.bold),
         ),
       ),
