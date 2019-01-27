@@ -82,7 +82,7 @@ class _ItemPageState extends State<ItemPage> {
         title: Text(widget.title),
       ),
       body: GridView.count(
-        padding: EdgeInsets.all(8),
+        padding: EdgeInsets.all(16),
         crossAxisSpacing: 8,
         mainAxisSpacing: 8,
           crossAxisCount: 3,

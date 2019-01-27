@@ -67,14 +67,43 @@ class _PointsValueIndicatorState extends State<PointsValueIndicator> {
     });
   }
 
+  bool notNull(Object o) => o != null;
+
+  String _ratioText() {
+    return "x" + ratio.floor().toString();
+  }
+
+  Widget _multiplierIndicator() {
+    if (ratio < 2) return null;
+
+    return Transform.translate(
+      offset: const Offset(4, -4),
+      child: Container(
+        width: 24,
+        height: 24,
+        alignment: Alignment.center,
+        decoration: BoxDecoration(
+            color: Colors.lightBlueAccent,
+            shape: BoxShape.circle
+        ),
+        child: Text(_ratioText(),
+          style: Theme.of(context).textTheme.caption.copyWith(fontWeight: FontWeight.bold),
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Container(
-      alignment: Alignment.centerRight,
-      child: LinearProgressIndicator(
-        backgroundColor: Colors.white54,
-        value: ratio,
-      ),
+    return Stack(
+      alignment: AlignmentDirectional.topEnd,
+      children: <Widget>[
+        LinearProgressIndicator(
+          backgroundColor: Colors.white54,
+          value: ratio,
+        ),
+        _multiplierIndicator(),
+      ].where(notNull).toList(),
     );
   }
 }
