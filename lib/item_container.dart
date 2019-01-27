@@ -9,7 +9,7 @@ class ItemContainer extends StatelessWidget {
 
   final Item item;
   final VoidCallback onPressed;
-  
+
   @override
   Widget build(BuildContext context) {
     return Ink.image(
@@ -33,19 +33,25 @@ class ItemContainer extends StatelessWidget {
                 children: <Widget>[
                   Text(
                     item.config.name,
-                    style: Theme.of(context).textTheme.subhead.copyWith(color: Colors.white),
+                    style: Theme.of(context)
+                        .textTheme
+                        .subhead
+                        .copyWith(color: Colors.white),
                     overflow: TextOverflow.ellipsis,
                     maxLines: 1,
                   ),
                   Text(
                     HowLongAgo.was(item.lastPressed),
-                    style: Theme.of(context).textTheme.subhead.copyWith(color: Colors.white70),
+                    style: Theme.of(context)
+                        .textTheme
+                        .subhead
+                        .copyWith(color: Colors.white70),
                     overflow: TextOverflow.ellipsis,
                     maxLines: 1,
                   ),
                 ],
               ),
-            )
+            ),
           ],
         ),
       ),
@@ -57,14 +63,14 @@ class PointsValueIndicator extends StatefulWidget {
   final DateTime lastPressed;
   final Duration expectedFrequency;
 
-  PointsValueIndicator({Key key, this.lastPressed, this.expectedFrequency}) : super(key: key);
+  PointsValueIndicator({Key key, this.lastPressed, this.expectedFrequency})
+      : super(key: key);
 
   @override
   _PointsValueIndicatorState createState() => _PointsValueIndicatorState();
 }
 
 class _PointsValueIndicatorState extends State<PointsValueIndicator> {
-
   var ratio = 0.0;
 
   @override
@@ -76,7 +82,8 @@ class _PointsValueIndicatorState extends State<PointsValueIndicator> {
   void _recalculateRatio() {
     if (widget.lastPressed == null) return;
     setState(() {
-      ratio = DateTime.now().difference(widget.lastPressed).inSeconds / widget.expectedFrequency.inSeconds;
+      ratio = DateTime.now().difference(widget.lastPressed).inSeconds /
+          widget.expectedFrequency.inSeconds;
     });
   }
 
@@ -100,12 +107,13 @@ class _PointsValueIndicatorState extends State<PointsValueIndicator> {
         height: 24,
         alignment: Alignment.center,
         decoration: BoxDecoration(
-            color: Colors.lightBlueAccent,
-            shape: BoxShape.circle
-        ),
+            color: Colors.lightBlueAccent, shape: BoxShape.circle),
         child: Text(
           _ratioText(),
-          style: Theme.of(context).textTheme.caption.copyWith(fontWeight: FontWeight.bold),
+          style: Theme.of(context)
+              .textTheme
+              .caption
+              .copyWith(fontWeight: FontWeight.bold),
         ),
       ),
     );
