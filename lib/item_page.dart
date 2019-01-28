@@ -126,7 +126,7 @@ class PointsSummary extends StatelessWidget {
       color: Colors.black87,
       padding: EdgeInsets.all(16),
       child: Table(
-        columnWidths: {0: FixedColumnWidth(64), 1: FlexColumnWidth(1)},
+        columnWidths: {0: FixedColumnWidth(64), 1: FlexColumnWidth(1), 2: FixedColumnWidth(64)},
         defaultVerticalAlignment: TableCellVerticalAlignment.middle,
         children: users
             .map(
@@ -145,6 +145,13 @@ class PointsSummary extends StatelessWidget {
                         value: _getUserPointsRatio(user),
                         valueColor: AlwaysStoppedAnimation(user.config.color.withAlpha(user.isActive ? 255 : 100)),
                         backgroundColor: Colors.transparent,
+                      ),
+                      Text(
+                        _getPoints(user).toString(),
+                        style: Theme.of(context)
+                            .textTheme
+                            .subhead
+                            .copyWith(color: user.isActive ? Colors.white : Colors.white54),
                       ),
                     ],
                   ),
