@@ -18,6 +18,12 @@ class _ItemPageState extends State<ItemPage> {
   List<Item> _items = HardcodedConfig.itemConfig.map((config) => Item(config)).toList();
   List<User> _users = HardcodedConfig.userConfig.map((config) => User(config)).toList();
 
+  @override
+  void initState() {
+    _users.first.isActive = true;
+    super.initState();
+  }
+
   List<User> _getActiveUsers() {
     return _users.where((user) => user.isActive).toList();
   }
@@ -28,10 +34,24 @@ class _ItemPageState extends State<ItemPage> {
     if (activeUsers.length > 1) return Colors.yellow;
     return activeUsers.first.config.color;
   }
-  
+
+  int _getPoints(User user) {
+    var lastWeek = DateTime.now().subtract(Duration(days: 7));
+    return user.pointsEarned
+        .where((points) => points.earnDate.isAfter(lastWeek))
+        .fold(0, (acc, points) => acc + points.amount);
+  }
+
+  double _getUserPointsRatio(User user) {
+    var totalPoints = _users.fold(0, (acc, user) => acc + _getPoints(user));
+    if (totalPoints == 0) return 0;
+    return _getPoints(user) / totalPoints;
+  }
+
   void _onUserPressed(User user) {
     setState(() {
-      user.isActive = !user.isActive;
+      user.isActive = true;
+      _users.where((u) => u != user).forEach((u) => u.isActive = false);
     });
   }
 
@@ -56,31 +76,70 @@ class _ItemPageState extends State<ItemPage> {
         backgroundColor: _getAppBarColor(),
         leading: PopupMenuButton(
           itemBuilder: (BuildContext context) => [
-            const PopupMenuItem(
-              child: Text("Admin"),
-            ),
-            const PopupMenuItem(
-              child: Text("1st floor"),
-            ),
-          ],
+                const PopupMenuItem(
+                  child: Text("Admin"),
+                ),
+                const PopupMenuItem(
+                  child: Text("1st floor"),
+                ),
+              ],
         ),
-        actions: _users.map((user) => IconButton(
-          icon: Image.asset(user.config.asset),
-          onPressed: () => _onUserPressed(user),
-        )).toList(),
+        actions: _users
+            .map((user) => IconButton(
+                  icon: Image.asset(user.config.asset),
+                  onPressed: () => _onUserPressed(user),
+                ))
+            .toList(),
         title: Text(widget.title),
       ),
-      body: GridView.count(
-          padding: EdgeInsets.all(16),
-          crossAxisSpacing: 8,
-          mainAxisSpacing: 8,
-          crossAxisCount: 3,
-          children: _items.map((item) {
-            return ItemContainer(
-              item: item,
-              onPressed: () => _onItemPressed(item),
-            );
-          }).toList()),
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: <Widget>[
+          Container(
+            color: Colors.black54,
+            padding: EdgeInsets.all(16),
+            child: Table(
+              columnWidths: {0: FixedColumnWidth(64), 1: FlexColumnWidth(1)},
+              defaultVerticalAlignment: TableCellVerticalAlignment.middle,
+              children: _users
+                  .map(
+                    (user) => TableRow(
+                          children: <Widget>[
+                            Container(
+                              child: Text(
+                                user.config.name,
+                                style: Theme.of(context).textTheme.subhead.copyWith(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                              ),
+                            ),
+                            LinearProgressIndicator(
+                              value: _getUserPointsRatio(user),
+                              valueColor: AlwaysStoppedAnimation(user.config.color),
+                              backgroundColor: Colors.white12,
+                            ),
+                          ],
+                        ),
+                  )
+                  .toList(),
+            ),
+          ),
+          Expanded(
+            child: GridView.count(
+                padding: EdgeInsets.all(16),
+                crossAxisSpacing: 8,
+                mainAxisSpacing: 8,
+                crossAxisCount: 3,
+                children: _items
+                    .map((item) => ItemContainer(
+                          item: item,
+                          onPressed: () => _onItemPressed(item),
+                        ))
+                    .toList()),
+          ),
+        ],
+      ),
     );
   }
 }
