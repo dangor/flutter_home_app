@@ -35,19 +35,6 @@ class _ItemPageState extends State<ItemPage> {
     return activeUsers.first.config.color;
   }
 
-  int _getPoints(User user) {
-    var lastWeek = DateTime.now().subtract(Duration(days: 7));
-    return user.pointsEarned
-        .where((points) => points.earnDate.isAfter(lastWeek))
-        .fold(0, (acc, points) => acc + points.amount);
-  }
-
-  double _getUserPointsRatio(User user) {
-    var totalPoints = _users.fold(0, (acc, user) => acc + _getPoints(user));
-    if (totalPoints == 0) return 0;
-    return _getPoints(user) / totalPoints;
-  }
-
   void _onUserPressed(User user) {
     setState(() {
       user.isActive = true;
@@ -95,36 +82,7 @@ class _ItemPageState extends State<ItemPage> {
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: <Widget>[
-          Container(
-            color: Colors.black54,
-            padding: EdgeInsets.all(16),
-            child: Table(
-              columnWidths: {0: FixedColumnWidth(64), 1: FlexColumnWidth(1)},
-              defaultVerticalAlignment: TableCellVerticalAlignment.middle,
-              children: _users
-                  .map(
-                    (user) => TableRow(
-                          children: <Widget>[
-                            Container(
-                              child: Text(
-                                user.config.name,
-                                style: Theme.of(context).textTheme.subhead.copyWith(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                              ),
-                            ),
-                            LinearProgressIndicator(
-                              value: _getUserPointsRatio(user),
-                              valueColor: AlwaysStoppedAnimation(user.config.color),
-                              backgroundColor: Colors.white12,
-                            ),
-                          ],
-                        ),
-                  )
-                  .toList(),
-            ),
-          ),
+          PointsSummary(users: _users),
           Expanded(
             child: GridView.count(
                 padding: EdgeInsets.all(16),
@@ -139,6 +97,59 @@ class _ItemPageState extends State<ItemPage> {
                     .toList()),
           ),
         ],
+      ),
+    );
+  }
+}
+
+class PointsSummary extends StatelessWidget {
+  final List<User> users;
+
+  const PointsSummary({Key key, this.users}) : super(key: key);
+
+  int _getPoints(User user) {
+    var lastWeek = DateTime.now().subtract(Duration(days: 7));
+    return user.pointsEarned
+        .where((points) => points.earnDate.isAfter(lastWeek))
+        .fold(0, (acc, points) => acc + points.amount);
+  }
+
+  double _getUserPointsRatio(User user) {
+    var totalPoints = users.fold(0, (acc, user) => acc + _getPoints(user));
+    if (totalPoints == 0) return 0;
+    return _getPoints(user) / totalPoints;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      color: Colors.black87,
+      padding: EdgeInsets.all(16),
+      child: Table(
+        columnWidths: {0: FixedColumnWidth(64), 1: FlexColumnWidth(1)},
+        defaultVerticalAlignment: TableCellVerticalAlignment.middle,
+        children: users
+            .map(
+              (user) => TableRow(
+                    children: <Widget>[
+                      Container(
+                        child: Text(
+                          user.config.name,
+                          style: Theme.of(context).textTheme.subhead.copyWith(
+                                color: user.isActive ? Colors.white : Colors.white54,
+                                fontWeight: user.isActive ? FontWeight.bold : FontWeight.normal,
+                              ),
+                        ),
+                      ),
+                      LinearProgressIndicator(
+                        value: _getUserPointsRatio(user),
+                        valueColor: AlwaysStoppedAnimation(user.config.color.withAlpha(user.isActive ? 255 : 100)),
+                        backgroundColor: Colors.transparent,
+                      ),
+                    ],
+                  ),
+            )
+            .toList(),
       ),
     );
   }
