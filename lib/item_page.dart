@@ -4,6 +4,7 @@ import 'item.dart';
 import 'item_container.dart';
 import 'user.dart';
 import 'points.dart';
+import 'shared_pref.dart';
 
 class ItemPage extends StatefulWidget {
   ItemPage({Key key, this.title}) : super(key: key);
@@ -21,7 +22,21 @@ class _ItemPageState extends State<ItemPage> {
   @override
   void initState() {
     _users.first.isActive = true;
+    _loadFromSharedPref();
     super.initState();
+  }
+
+  void _loadFromSharedPref() async {
+    // items
+    for (var item in _items) {
+      var lastPressed = await SharedPref.getLastPressed(item.config.id);
+      setState(() {
+        item.lastPressed = lastPressed;
+      });
+    }
+
+    // users
+    // TODO
   }
 
   List<User> _getActiveUsers() {
@@ -54,6 +69,8 @@ class _ItemPageState extends State<ItemPage> {
       item.lastPressed = now;
       activeUsers.forEach((user) => user.pointsEarned.add(Points(points, now)));
     });
+
+    SharedPref.setLastPressed(item.config.id, now);
   }
 
   @override
