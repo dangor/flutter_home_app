@@ -36,7 +36,12 @@ class _ItemPageState extends State<ItemPage> {
     }
 
     // users
-    // TODO
+    for (var user in _users) {
+      var pointsEarned = await SharedPref.getPointsEarned(user.config.id);
+      setState(() {
+        user.pointsEarned = pointsEarned;
+      });
+    }
   }
 
   List<User> _getActiveUsers() {
@@ -60,17 +65,20 @@ class _ItemPageState extends State<ItemPage> {
   void _onItemPressed(Item item) {
     var now = DateTime.now();
     var activeUsers = _getActiveUsers();
-    var points = 100;
+    var pointsAmount = 100;
     if (item.lastPressed != null) {
-      points = ((now.difference(item.lastPressed).inSeconds / item.config.expectedFrequency.inSeconds) * 100).floor();
+      pointsAmount = ((now.difference(item.lastPressed).inSeconds / item.config.expectedFrequency.inSeconds) * 100).floor();
     }
+
+    var points = Points(pointsAmount, now);
 
     setState(() {
       item.lastPressed = now;
-      activeUsers.forEach((user) => user.pointsEarned.add(Points(points, now)));
+      activeUsers.forEach((user) => user.pointsEarned.add(points));
     });
 
     SharedPref.setLastPressed(item.config.id, now);
+    activeUsers.forEach((user) => SharedPref.addUserPointsEarned(user.config.id, points));
   }
 
   @override
