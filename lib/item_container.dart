@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'item.dart';
 import 'how_long_ago.dart';

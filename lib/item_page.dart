@@ -6,6 +6,14 @@ import 'user.dart';
 import 'points.dart';
 import 'shared_pref.dart';
 
+class ItemPageConfig {
+  final String id;
+  final String title;
+  final Set<String> itemIds;
+
+  ItemPageConfig(this.id, this.title, this.itemIds);
+}
+
 class ItemPage extends StatefulWidget {
   ItemPage({Key key, this.title}) : super(key: key);
 
@@ -18,6 +26,7 @@ class ItemPage extends StatefulWidget {
 class _ItemPageState extends State<ItemPage> {
   List<Item> _items = HardcodedConfig.itemConfig.map((config) => Item(config)).toList();
   List<User> _users = HardcodedConfig.userConfig.map((config) => User(config)).toList();
+  ItemPageConfig _activePage = HardcodedConfig.pageConfig[0];
 
   @override
   void initState() {
@@ -67,7 +76,8 @@ class _ItemPageState extends State<ItemPage> {
     var activeUsers = _getActiveUsers();
     var pointsAmount = 100;
     if (item.lastPressed != null) {
-      pointsAmount = ((now.difference(item.lastPressed).inSeconds / item.config.expectedFrequency.inSeconds) * 100).floor();
+      pointsAmount =
+          ((now.difference(item.lastPressed).inSeconds / item.config.expectedFrequency.inSeconds) * 100).floor();
     }
 
     var points = Points(pointsAmount, now);
@@ -81,20 +91,29 @@ class _ItemPageState extends State<ItemPage> {
     activeUsers.forEach((user) => SharedPref.addUserPointsEarned(user.config.id, points));
   }
 
+  void _onPageConfigPressed(ItemPageConfig pageConfig) {
+    setState(() {
+      _activePage = pageConfig;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: _getAppBarColor(),
         leading: PopupMenuButton(
-          itemBuilder: (BuildContext context) => [
-                const PopupMenuItem(
-                  child: Text("Admin"),
-                ),
-                const PopupMenuItem(
-                  child: Text("1st floor"),
-                ),
-              ],
+          onSelected: _onPageConfigPressed,
+          itemBuilder: (BuildContext context) => HardcodedConfig.pageConfig
+              .map(
+                (pageConfig) => PopupMenuItem(
+                      child: Text(
+                        pageConfig.title,
+                      ),
+                      value: pageConfig,
+                    ),
+              )
+              .toList(),
         ),
         actions: _users
             .map((user) => IconButton(
@@ -107,7 +126,7 @@ class _ItemPageState extends State<ItemPage> {
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: <Widget>[
-          PointsSummary(users: _users),
+          PointsSummary(users: _users, title: _activePage.title),
           Expanded(
             child: GridView.count(
                 padding: EdgeInsets.all(16),
@@ -129,8 +148,9 @@ class _ItemPageState extends State<ItemPage> {
 
 class PointsSummary extends StatelessWidget {
   final List<User> users;
+  final String title;
 
-  const PointsSummary({Key key, this.users}) : super(key: key);
+  const PointsSummary({Key key, this.users, this.title}) : super(key: key);
 
   int _getPoints(User user) {
     var lastWeek = DateTime.now().subtract(Duration(days: 7));
@@ -150,38 +170,48 @@ class PointsSummary extends StatelessWidget {
     return Container(
       color: Colors.black87,
       padding: EdgeInsets.all(16),
-      child: Table(
-        columnWidths: {0: FixedColumnWidth(64), 1: FlexColumnWidth(1), 2: FixedColumnWidth(64)},
-        defaultVerticalAlignment: TableCellVerticalAlignment.middle,
-        children: users
-            .map(
-              (user) => TableRow(
-                    children: <Widget>[
-                      Container(
-                        child: Text(
-                          user.config.name,
-                          style: Theme.of(context).textTheme.subhead.copyWith(
-                                color: user.isActive ? Colors.white : Colors.white54,
-                                fontWeight: user.isActive ? FontWeight.bold : FontWeight.normal,
-                              ),
-                        ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: <Widget>[
+          Text(
+            "$title (past 7 days)",
+            style: Theme.of(context).textTheme.body1.copyWith(color: Colors.blueGrey),
+            textAlign: TextAlign.left,
+          ),
+          Table(
+            columnWidths: {0: FixedColumnWidth(64), 1: FlexColumnWidth(1), 2: FixedColumnWidth(64)},
+            defaultVerticalAlignment: TableCellVerticalAlignment.middle,
+            children: users
+                .map(
+                  (user) => TableRow(
+                        children: <Widget>[
+                          Container(
+                            child: Text(
+                              user.config.name,
+                              style: Theme.of(context).textTheme.subhead.copyWith(
+                                    color: user.isActive ? Colors.white : Colors.white54,
+                                    fontWeight: user.isActive ? FontWeight.bold : FontWeight.normal,
+                                  ),
+                            ),
+                          ),
+                          LinearProgressIndicator(
+                            value: _getUserPointsRatio(user),
+                            valueColor: AlwaysStoppedAnimation(user.config.color.withAlpha(user.isActive ? 255 : 100)),
+                            backgroundColor: Colors.transparent,
+                          ),
+                          Text(
+                            _getPoints(user).toString(),
+                            style: Theme.of(context)
+                                .textTheme
+                                .subhead
+                                .copyWith(color: user.isActive ? Colors.white : Colors.white54),
+                          ),
+                        ],
                       ),
-                      LinearProgressIndicator(
-                        value: _getUserPointsRatio(user),
-                        valueColor: AlwaysStoppedAnimation(user.config.color.withAlpha(user.isActive ? 255 : 100)),
-                        backgroundColor: Colors.transparent,
-                      ),
-                      Text(
-                        _getPoints(user).toString(),
-                        style: Theme.of(context)
-                            .textTheme
-                            .subhead
-                            .copyWith(color: user.isActive ? Colors.white : Colors.white54),
-                      ),
-                    ],
-                  ),
-            )
-            .toList(),
+                )
+                .toList(),
+          ),
+        ],
       ),
     );
   }

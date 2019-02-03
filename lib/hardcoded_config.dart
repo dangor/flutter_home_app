@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 
 import 'item.dart';
+import 'item_page.dart';
 import 'user.dart';
 
+/// Hardcoded config, future: move to DB, create admin UI
 class HardcodedConfig {
   static List<ItemConfig> itemConfig = List.unmodifiable([
     ItemConfig("id0", "Feed Anton", "images/anton_fed.png", Duration(seconds: 12)),
@@ -18,5 +20,11 @@ class HardcodedConfig {
   static List<UserConfig> userConfig = List.unmodifiable([
     UserConfig("id0", "Angie", "images/angie_head.png", Colors.green),
     UserConfig("id1", "Brian", "images/brian_head.png", Colors.red),
+  ]);
+
+  static List<ItemPageConfig> pageConfig = List.unmodifiable([
+    ItemPageConfig("id0", "First floor", ["id0", "id1", "id2", "id3", "id4", "id5"].toSet()),
+    ItemPageConfig("id1", "Kitchen", ["id0"].toSet()),
+    ItemPageConfig("id2", "Third floor", ["id6", "id7"].toSet()),
   ]);
 }

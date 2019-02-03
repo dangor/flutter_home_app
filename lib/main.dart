@@ -7,11 +7,11 @@ class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Home App',
+      title: 'Dang Home App',
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: ItemPage(title: '1st floor'),
+      home: ItemPage(title: 'The Dangs'),
     );
   }
 }
