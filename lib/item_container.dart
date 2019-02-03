@@ -70,7 +70,7 @@ class PointsValueIndicator extends StatefulWidget {
 }
 
 class _PointsValueIndicatorState extends State<PointsValueIndicator> {
-  var ratio = 0.0;
+  var ratio = 1.0;
 
   @override
   void initState() {
