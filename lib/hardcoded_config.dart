@@ -30,8 +30,8 @@ class HardcodedConfig {
   ]);
 
   static List<UserConfig> userConfig = List.unmodifiable([
-    UserConfig("user0", "Angie", "images/angie_head.png", Colors.green),
-    UserConfig("user1", "Brian", "images/brian_head.png", Colors.red),
+    UserConfig("user0", "Angie", "images/angie_head.png", "images/jellyfish_bg.gif", Colors.green),
+    UserConfig("user1", "Brian", "images/brian_head.png", "images/hawk_camera.gif", Colors.red),
   ]);
 
   static List<ItemPageConfig> pageConfig = List.unmodifiable([

@@ -150,17 +150,21 @@ class _ItemPageState extends State<ItemPage> {
             child: Stack(
               alignment: AlignmentDirectional.bottomCenter,
               children: [
-                Image(
-                  alignment: AlignmentDirectional.bottomCenter,
-                  image: AssetImage("images/jellyfish_bg.gif"),
+                SizedBox(
+                  width: double.infinity,
+                  child: Image(
+                    fit: BoxFit.fitWidth,
+                    alignment: AlignmentDirectional.bottomCenter,
+                    image: AssetImage(_getActiveUsers().first.config.bgAsset),
+                  ),
                 ),
                 Positioned.fill(
                   child: Container(
                     alignment: AlignmentDirectional.topCenter,
                     decoration: BoxDecoration(
                       gradient: LinearGradient(
-                        begin: Alignment.topCenter,
-                        end: Alignment(0, 0.10),
+                        begin: Alignment(0, -0.9),
+                        end: Alignment(0, -0.7),
                         colors: [
                           Colors.black,
                           Colors.transparent,
