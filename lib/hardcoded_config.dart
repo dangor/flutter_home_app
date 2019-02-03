@@ -7,14 +7,24 @@ import 'user.dart';
 /// Hardcoded config, future: move to DB, create admin UI
 class HardcodedConfig {
   static List<ItemConfig> itemConfig = List.unmodifiable([
-    ItemConfig("item0", "Feed Anton", "images/anton_fed.png", Duration(hours: 12)),
-    ItemConfig("item1", "Let Anton out", "images/patio_door.png", Duration(hours: 10)),
-    ItemConfig("item2", "Walk Anton", "images/walk_anton.png", Duration(days: 1)),
-    ItemConfig("item3", "Glucosamine", "images/glucosamine.png", Duration(days: 1)),
-    ItemConfig("item4", "Brush Anton's teeth", "images/brush_teeth.png", Duration(days: 7)),
-    ItemConfig("item5", "Clip Anton's nails", "images/nail_clipper.png", Duration(days: 30)),
-    ItemConfig("item6", "Clean litter box", "images/clean_litterbox.png", Duration(hours: 12)),
-    ItemConfig("item7", "Feed cats", "images/feed_cats.png", Duration(hours: 12)),
+    ItemConfig("dogfood", "Feed Anton", "images/anton_fed.png", Duration(hours: 12)),
+    ItemConfig("dogpee", "Let Anton out", "images/patio_door.png", Duration(hours: 10)),
+    ItemConfig("dogwalk", "Walk Anton", "images/walk_anton.png", Duration(days: 1)),
+    ItemConfig("glucosamine", "Glucosamine", "images/glucosamine.png", Duration(days: 1)),
+    ItemConfig("dogteeth", "Brush Anton's teeth", "images/brush_teeth.png", Duration(days: 7)),
+    ItemConfig("dognails", "Clip Anton's nails", "images/nail_clipper.png", Duration(days: 30)),
+    ItemConfig("litterbox", "Clean litter box", "images/clean_litterbox.png", Duration(hours: 12)),
+    ItemConfig("catfood", "Feed cats", "images/feed_cats.png", Duration(hours: 12)),
+    ItemConfig("guido", "Guido", "TODO", Duration(days: 2)),
+    ItemConfig("vacuum1f", "Vacuum 1st floor", "TODO", Duration(days: 7)),
+    ItemConfig("plants", "Water plants", "TODO", Duration(days: 7)),
+    ItemConfig("jade", "Water jade plant", "TODO", Duration(days: 21)),
+    ItemConfig("probiotic", "Probiotic", "TODO", Duration(days: 1)),
+    ItemConfig("rinseaid", "Rinse Aid", "TODO", Duration(days: 30)),
+    ItemConfig("sponge", "Replace Sponge", "TODO", Duration(days: 30)),
+    ItemConfig("launderClothes", "Laundry - Clothes", "TODO", Duration(days: 4)),
+    ItemConfig("launderLinens", "Laundry - Linens", "TODO", Duration(days: 14)),
+    ItemConfig("vacuum3f", "Vacuum 3rd floor", "TODO", Duration(days: 7)),
   ]);
 
   static List<UserConfig> userConfig = List.unmodifiable([
@@ -23,8 +33,8 @@ class HardcodedConfig {
   ]);
 
   static List<ItemPageConfig> pageConfig = List.unmodifiable([
-    ItemPageConfig("page0", "First floor", ["item1", "item0", "item3", "item2", "item4", "item5"].toSet()),
-    ItemPageConfig("page1", "Kitchen", ["item0"].toSet()),
-    ItemPageConfig("page2", "Third floor", ["item6", "item7"].toSet()),
+    ItemPageConfig("page0", "First floor", ["dogpee", "dogfood", "glucosamine", "dogwalk", "dogteeth", "dognails", "guido", "vacuum1f"].toSet()),
+    ItemPageConfig("page1", "Kitchen", ["probiotic", "plants", "jade", "rinseaid", "sponge"].toSet()),
+    ItemPageConfig("page2", "Third floor", ["litterbox", "catfood", "vacuum3f", "launderClothes", "launderLinens"].toSet()),
   ]);
 }
