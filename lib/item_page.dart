@@ -81,15 +81,31 @@ class _ItemPageState extends State<ItemPage> {
           ((now.difference(item.lastPressed).inSeconds / item.config.expectedFrequency.inSeconds) * 100).floor();
     }
 
-    var points = Points(pointsAmount, now);
+    var points = Points(pointsAmount, now, item.config.id);
 
     setState(() {
+      item.secondToLastPressed = item.lastPressed;
       item.lastPressed = now;
       activeUsers.forEach((user) => user.pointsEarned.add(points));
     });
 
     SharedPref.setLastPressed(item.config.id, now);
-    activeUsers.forEach((user) => SharedPref.addUserPointsEarned(user.config.id, points));
+    activeUsers.forEach((user) => SharedPref.setPointsEarned(user.config.id, user.pointsEarned));
+  }
+
+  void _onUndoPressed(Item item) {
+    var thirtySecondsAgo = DateTime.now().subtract(Duration(seconds: 30));
+
+    setState(() {
+      item.lastPressed = item.secondToLastPressed;
+      _users.forEach((user) => user.pointsEarned
+          .removeWhere((points) => points.itemId == item.config.id && points.earnDate.isAfter(thirtySecondsAgo)));
+    });
+
+    if (item.lastPressed != null) {
+      SharedPref.setLastPressed(item.config.id, item.lastPressed);
+    }
+    _users.forEach((user) => SharedPref.setPointsEarned(user.config.id, user.pointsEarned));
   }
 
   void _onPageConfigPressed(ItemPageConfig pageConfig) {
@@ -139,6 +155,7 @@ class _ItemPageState extends State<ItemPage> {
                     .map((item) => ItemContainer(
                           item: item,
                           onPressed: () => _onItemPressed(item),
+                          onUndo: () => _onUndoPressed(item),
                         ))
                     .toList()),
           ),

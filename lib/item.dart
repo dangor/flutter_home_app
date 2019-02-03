@@ -1,6 +1,7 @@
 class Item {
   final ItemConfig config;
   DateTime lastPressed;
+  DateTime secondToLastPressed;
 
   Item(this.config);
 }
