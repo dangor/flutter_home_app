@@ -79,6 +79,14 @@ class _PointsValueIndicatorState extends State<PointsValueIndicator> {
     super.initState();
   }
 
+  @override
+  void didUpdateWidget(PointsValueIndicator oldWidget) {
+    if (widget.lastPressed != oldWidget.lastPressed) {
+      _recalculateRatio();
+    }
+    super.didUpdateWidget(oldWidget);
+  }
+
   void _recalculateRatio() {
     if (widget.lastPressed == null) return;
     setState(() {
