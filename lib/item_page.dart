@@ -134,6 +134,7 @@ class _ItemPageState extends State<ItemPage> {
                 mainAxisSpacing: 8,
                 crossAxisCount: 3,
                 children: _items
+                    .where((item) => _activePage.itemIds.contains(item.config.id))
                     .map((item) => ItemContainer(
                           item: item,
                           onPressed: () => _onItemPressed(item),
@@ -173,10 +174,13 @@ class PointsSummary extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: <Widget>[
-          Text(
-            "$title (past 7 days)",
-            style: Theme.of(context).textTheme.body1.copyWith(color: Colors.blueGrey),
-            textAlign: TextAlign.left,
+          Container(
+            padding: EdgeInsets.only(bottom: 8),
+            child: Text(
+              "$title (past 7 days)",
+              style: Theme.of(context).textTheme.body1.copyWith(color: Colors.blueGrey),
+              textAlign: TextAlign.left,
+            ),
           ),
           Table(
             columnWidths: {0: FixedColumnWidth(64), 1: FlexColumnWidth(1), 2: FixedColumnWidth(64)},
