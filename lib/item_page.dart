@@ -140,24 +140,58 @@ class _ItemPageState extends State<ItemPage> {
             .toList(),
         title: Text(widget.title),
       ),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: <Widget>[
-          PointsSummary(users: _users, title: _activePage.title),
-          Expanded(
-            child: GridView.count(
-                padding: EdgeInsets.all(16),
-                crossAxisSpacing: 8,
-                mainAxisSpacing: 8,
-                crossAxisCount: 3,
-                children: _activePage.itemIds
-                    .map((id) => _items[id])
-                    .map((item) => ItemContainer(
-                          item: item,
-                          onPressed: () => _onItemPressed(item),
-                          onUndo: () => _onUndoPressed(item),
-                        ))
-                    .toList()),
+      body: Stack(
+        children: [
+          Container(
+            color: Colors.black,
+          ),
+          Container(
+            alignment: AlignmentDirectional.bottomCenter,
+            child: Stack(
+              alignment: AlignmentDirectional.bottomCenter,
+              children: [
+                Image(
+                  alignment: AlignmentDirectional.bottomCenter,
+                  image: AssetImage("images/jellyfish_bg.gif"),
+                ),
+                Positioned.fill(
+                  child: Container(
+                    alignment: AlignmentDirectional.topCenter,
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        begin: Alignment.topCenter,
+                        end: Alignment(0, 0.10),
+                        colors: [
+                          Colors.black,
+                          Colors.transparent,
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: <Widget>[
+              PointsSummary(users: _users, title: _activePage.title),
+              Expanded(
+                child: GridView.count(
+                    padding: EdgeInsets.all(16),
+                    crossAxisSpacing: 8,
+                    mainAxisSpacing: 8,
+                    crossAxisCount: 3,
+                    children: _activePage.itemIds
+                        .map((id) => _items[id])
+                        .map((item) => ItemContainer(
+                              item: item,
+                              onPressed: () => _onItemPressed(item),
+                              onUndo: () => _onUndoPressed(item),
+                            ))
+                        .toList()),
+              ),
+            ],
           ),
         ],
       ),
@@ -187,7 +221,7 @@ class PointsSummary extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Colors.black87,
+      color: Colors.white12,
       padding: EdgeInsets.all(16),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,

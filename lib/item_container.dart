@@ -14,41 +14,44 @@ class ItemContainer extends StatelessWidget {
   Widget build(BuildContext context) {
     return Stack(
       children: [
-        Ink.image(
-          image: AssetImage(item.config.asset),
-          fit: BoxFit.cover,
-          child: InkWell(
-            onTap: onPressed,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: <Widget>[
-                PointsValueIndicator(
-                  lastPressed: item.lastPressed,
-                  expectedFrequency: item.config.expectedFrequency,
-                ),
-                Container(
-                  padding: EdgeInsets.all(8),
-                  color: Colors.black45,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Text(
-                        item.config.name,
-                        style: Theme.of(context).textTheme.subhead.copyWith(color: Colors.white),
-                        overflow: TextOverflow.ellipsis,
-                        maxLines: 1,
-                      ),
-                      Text(
-                        HowLongAgo.was(item.lastPressed),
-                        style: Theme.of(context).textTheme.subhead.copyWith(color: Colors.white70),
-                        overflow: TextOverflow.ellipsis,
-                        maxLines: 1,
-                      ),
-                    ],
+        Material(
+          color: Colors.transparent,
+          child: Ink.image(
+            image: AssetImage(item.config.asset),
+            fit: BoxFit.cover,
+            child: InkWell(
+              onTap: onPressed,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: <Widget>[
+                  PointsValueIndicator(
+                    lastPressed: item.lastPressed,
+                    expectedFrequency: item.config.expectedFrequency,
                   ),
-                ),
-              ],
+                  Container(
+                    padding: EdgeInsets.all(8),
+                    color: Colors.black45,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Text(
+                          item.config.name,
+                          style: Theme.of(context).textTheme.subhead.copyWith(color: Colors.white),
+                          overflow: TextOverflow.ellipsis,
+                          maxLines: 1,
+                        ),
+                        Text(
+                          HowLongAgo.was(item.lastPressed),
+                          style: Theme.of(context).textTheme.subhead.copyWith(color: Colors.white70),
+                          overflow: TextOverflow.ellipsis,
+                          maxLines: 1,
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
         ),
@@ -211,12 +214,12 @@ class _UndoButtonState extends State<UndoButton> {
     return GestureDetector(
       onTap: widget.onPressed,
       child: Container(
-        color: Colors.white54,
+        color: Colors.white30,
         alignment: AlignmentDirectional.center,
         child: Container(
           padding: EdgeInsets.all(8),
           decoration: BoxDecoration(
-            color: Colors.black12,
+            color: Colors.black38,
             shape: BoxShape.circle,
           ),
           child: Icon(
