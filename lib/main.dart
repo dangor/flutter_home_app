@@ -12,6 +12,7 @@ class App extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
       home: ItemPage(title: 'The Dangs'),
+      debugShowCheckedModeBanner: false,
     );
   }
 }
