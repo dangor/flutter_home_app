@@ -24,7 +24,8 @@ class ItemPage extends StatefulWidget {
 }
 
 class _ItemPageState extends State<ItemPage> {
-  List<Item> _items = HardcodedConfig.itemConfig.map((config) => Item(config)).toList();
+  Map<String, Item> _items = Map.fromIterable(HardcodedConfig.itemConfig,
+      key: (itemConfig) => itemConfig.id, value: (itemConfig) => Item(itemConfig));
   List<User> _users = HardcodedConfig.userConfig.map((config) => User(config)).toList();
   ItemPageConfig _activePage = HardcodedConfig.pageConfig[0];
 
@@ -37,7 +38,7 @@ class _ItemPageState extends State<ItemPage> {
 
   void _loadFromSharedPref() async {
     // items
-    for (var item in _items) {
+    for (var item in _items.values) {
       var lastPressed = await SharedPref.getLastPressed(item.config.id);
       setState(() {
         item.lastPressed = lastPressed;
@@ -133,8 +134,8 @@ class _ItemPageState extends State<ItemPage> {
                 crossAxisSpacing: 8,
                 mainAxisSpacing: 8,
                 crossAxisCount: 3,
-                children: _items
-                    .where((item) => _activePage.itemIds.contains(item.config.id))
+                children: _activePage.itemIds
+                    .map((id) => _items[id])
                     .map((item) => ItemContainer(
                           item: item,
                           onPressed: () => _onItemPressed(item),
