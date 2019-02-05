@@ -27,6 +27,7 @@ class HardcodedConfig {
     ItemConfig("vacuum3f", "Vacuum 3rd floor", "images/vacuum_3rd_floor.png", Duration(days: 7)),
     ItemConfig("rundishwasher", "Run dishwasher", "images/dishwasher_display.png", Duration(days: 4)),
     ItemConfig("emptydishwasher", "Empty dishwasher", "images/empty_dishwasher.png", Duration(days: 4)),
+    ItemConfig("kitchensink", "Clean sink", "images/sink.png", Duration(days: 1)),
   ]);
 
   static List<UserConfig> userConfig = List.unmodifiable([
@@ -36,7 +37,7 @@ class HardcodedConfig {
 
   static List<ItemPageConfig> pageConfig = List.unmodifiable([
     ItemPageConfig("page0", "First floor", ["dogpee", "dogfood", "glucosamine", "dogwalk", "dogteeth", "dognails", "guido", "vacuum1f"].toSet()),
-    ItemPageConfig("page1", "Kitchen", ["rundishwasher", "emptydishwasher", "rinseaid", "probiotic", "plants", "jade", "sponge"].toSet()),
+    ItemPageConfig("page1", "Kitchen", ["rundishwasher", "emptydishwasher", "rinseaid", "kitchensink", "sponge", "probiotic", "plants", "jade"].toSet()),
     ItemPageConfig("page2", "Third floor", ["litterbox", "catfood", "vacuum3f", "launderClothes", "launderLinens"].toSet()),
   ]);
 }
