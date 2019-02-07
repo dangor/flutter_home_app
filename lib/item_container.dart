@@ -41,11 +41,8 @@ class ItemContainer extends StatelessWidget {
                           overflow: TextOverflow.ellipsis,
                           maxLines: 1,
                         ),
-                        Text(
-                          HowLongAgo.was(item.lastPressed),
-                          style: Theme.of(context).textTheme.subhead.copyWith(color: Colors.white70),
-                          overflow: TextOverflow.ellipsis,
-                          maxLines: 1,
+                        LastPressedText(
+                          lastPressed: item.lastPressed,
                         ),
                       ],
                     ),
@@ -60,6 +57,56 @@ class ItemContainer extends StatelessWidget {
           onPressed: onUndo,
         ),
       ],
+    );
+  }
+}
+
+class LastPressedText extends StatefulWidget {
+  final DateTime lastPressed;
+
+  LastPressedText({Key key, this.lastPressed}) : super(key: key);
+
+  @override
+  _LastPressedTextState createState() => _LastPressedTextState();
+}
+
+class _LastPressedTextState extends State<LastPressedText> {
+  var textValue = "";
+  Timer timer;
+
+  @override
+  void initState() {
+    timer = Timer.periodic(Duration(minutes: 1), (timer) => _recalculateTextValue());
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    timer.cancel();
+    super.dispose();
+  }
+
+  @override
+  void didUpdateWidget(LastPressedText oldWidget) {
+    if (widget.lastPressed != oldWidget.lastPressed) {
+      _recalculateTextValue();
+    }
+    super.didUpdateWidget(oldWidget);
+  }
+
+  void _recalculateTextValue() {
+    setState(() {
+      textValue = HowLongAgo.was(widget.lastPressed);
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Text(
+      textValue,
+      style: Theme.of(context).textTheme.subhead.copyWith(color: Colors.white70),
+      overflow: TextOverflow.ellipsis,
+      maxLines: 1,
     );
   }
 }
