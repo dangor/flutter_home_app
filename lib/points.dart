@@ -17,7 +17,10 @@ class Points {
     if (split.length < 2) return null;
 
     var amount = int.parse(split[0]);
-    var earnDate = DateTime.tryParse(split[1]);
+
+    var millis = int.parse(split[1]);
+    if (millis == null) return null;
+    var earnDate = DateTime.fromMillisecondsSinceEpoch(millis);
     if (earnDate == null) return null;
 
     String itemId;

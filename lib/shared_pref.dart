@@ -25,7 +25,7 @@ class SharedPref {
   /// set last pressed date to given new value
   static void setLastPressed(String itemId, DateTime newValue) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.setString(_getLastPressedKey(itemId), newValue.millisecondsSinceEpoch.toString());
+    prefs.setString(_getLastPressedKey(itemId), newValue.millisecondsSinceEpoch.toString());
   }
 
   /// get list of points for given user id
