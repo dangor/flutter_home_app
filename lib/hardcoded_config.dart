@@ -28,6 +28,9 @@ class HardcodedConfig {
     ItemConfig("rundishwasher", "Run dishwasher", "images/dishwasher_display.png", Duration(days: 4)),
     ItemConfig("emptydishwasher", "Empty dishwasher", "images/empty_dishwasher.png", Duration(days: 4)),
     ItemConfig("kitchensink", "Clean sink", "images/sink.png", Duration(days: 1)),
+    ItemConfig("cleanyard", "Clean yard", "images/yard.png", Duration(days: 1)),
+    ItemConfig("sink3f", "Clean sink", "images/sink3f.png", Duration(days: 2)),
+    ItemConfig("mealprep", "Meal prep", "images/mealprep.png", Duration(days: 3)),
   ]);
 
   static List<UserConfig> userConfig = List.unmodifiable([
@@ -36,8 +39,8 @@ class HardcodedConfig {
   ]);
 
   static List<ItemPageConfig> pageConfig = List.unmodifiable([
-    ItemPageConfig("page0", "First floor", ["dogpee", "dogfood", "glucosamine", "dogwalk", "dogteeth", "dognails", "guido", "vacuum1f"].toSet()),
-    ItemPageConfig("page1", "Kitchen", ["rundishwasher", "emptydishwasher", "rinseaid", "kitchensink", "sponge", "probiotic", "plants", "jade"].toSet()),
-    ItemPageConfig("page2", "Third floor", ["litterbox", "catfood", "vacuum3f", "launderClothes", "launderLinens"].toSet()),
+    ItemPageConfig("page0", "First floor", ["dogpee", "dogfood", "glucosamine", "dogwalk", "cleanyard", "dogteeth", "dognails", "guido", "vacuum1f"].toSet()),
+    ItemPageConfig("page1", "Kitchen", ["rundishwasher", "emptydishwasher", "rinseaid", "kitchensink", "sponge", "probiotic", "mealprep", "plants", "jade"].toSet()),
+    ItemPageConfig("page2", "Third floor", ["litterbox", "catfood", "sink3f", "vacuum3f", "launderClothes", "launderLinens"].toSet()),
   ]);
 }
