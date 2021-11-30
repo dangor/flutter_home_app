@@ -234,7 +234,7 @@ class PointsSummary extends StatelessWidget {
             padding: EdgeInsets.only(bottom: 8),
             child: Text(
               "$title (past 7 days)",
-              style: Theme.of(context).textTheme.body1.copyWith(color: Colors.blueGrey),
+              style: Theme.of(context).textTheme.bodyText1.copyWith(color: Colors.blueGrey),
               textAlign: TextAlign.left,
             ),
           ),
@@ -248,7 +248,7 @@ class PointsSummary extends StatelessWidget {
                           Container(
                             child: Text(
                               user.config.name,
-                              style: Theme.of(context).textTheme.subhead.copyWith(
+                              style: Theme.of(context).textTheme.subtitle1.copyWith(
                                     color: user.isActive ? Colors.white : Colors.white54,
                                     fontWeight: user.isActive ? FontWeight.bold : FontWeight.normal,
                                   ),
@@ -263,7 +263,7 @@ class PointsSummary extends StatelessWidget {
                             _getPoints(user).toString(),
                             style: Theme.of(context)
                                 .textTheme
-                                .subhead
+                                .subtitle1
                                 .copyWith(color: user.isActive ? Colors.white : Colors.white54),
                           ),
                         ],

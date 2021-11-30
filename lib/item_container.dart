@@ -37,7 +37,7 @@ class ItemContainer extends StatelessWidget {
                       children: <Widget>[
                         Text(
                           item.config.name,
-                          style: Theme.of(context).textTheme.subhead.copyWith(color: Colors.white),
+                          style: Theme.of(context).textTheme.subtitle1.copyWith(color: Colors.white),
                           overflow: TextOverflow.ellipsis,
                           maxLines: 1,
                         ),
@@ -104,7 +104,7 @@ class _LastPressedTextState extends State<LastPressedText> {
   Widget build(BuildContext context) {
     return Text(
       textValue,
-      style: Theme.of(context).textTheme.subhead.copyWith(color: Colors.white70),
+      style: Theme.of(context).textTheme.subtitle1.copyWith(color: Colors.white70),
       overflow: TextOverflow.ellipsis,
       maxLines: 1,
     );
